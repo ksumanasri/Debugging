@@ -1,42 +1,82 @@
-# CampusCafe — AI-Generated Project Debugging & Enhancement Task
+# CampusCafe
 
-## Scenario
-An AI assistant generated this 2-page **CampusCafe** web application using **HTML, CSS, and JavaScript**. However, when you open `index.html` in a browser, the layout, images, scripts, checkout page, and calculations are broken—and several requested features are incomplete.
+A responsive, two-page campus café ordering demo built with HTML, CSS, and vanilla JavaScript. Browse the menu, search and filter items, manage a cart, and complete a sample student checkout.
 
----
+## Features
 
-## Your Objectives
+- Browse café drinks and snacks with product icons, descriptions, and prices.
+- Filter by category and search menu items by name.
+- Add products to the cart, adjust quantities, and see the item count and subtotal update.
+- Keep cart contents between the menu and checkout pages using browser local storage.
+- Apply `STUDENT15` for 15% off the subtotal when it is at least ₹150.
+- Review 5% GST, discount, and grand total before confirming an order.
+- Validate student details and display a generated Order ID on confirmation.
+- Responsive layout, keyboard focus styles, and screen-reader labels/status messages.
 
-### Part 1: Fix Folder Structure, Resource Links & Existing Bugs
-1. Inspect the project folder structure and fix all broken **CSS**, **JavaScript**, **image**, and **page navigation** paths across both `index.html` and `pages/checkout.html` (including CSS `url(...)` paths and `<script>` loading order).
-2. Fix all broken icons on the menu cards so every item displays its proper SVG graphic.
-3. Fix the JavaScript bugs preventing:
-   - All "Add to Cart" buttons from working properly
-   - Cart totals from calculating numerically (currently concatenating values)
-   - Saved cart items from appearing on `pages/checkout.html`
-   - Grand Total from displaying on the checkout page
+## Run locally
 
-### Part 2: Add Missing Logic
-1. **Menu Filtering & Search (`index.html`)**:
-   - Clicking `All`, `Drinks`, or `Snacks` should filter the menu items and highlight the active button.
-   - Typing in the search box should filter items by name in real time (combined with the active category).
-2. **Cart Quantity Controls & Empty Check (`index.html`)**:
-   - Adding the same item again should increase its quantity instead of duplicating rows.
-   - Add working `+` and `-` quantity buttons in the cart (removing the item if quantity reaches `0`).
-   - Update the top-right `Cart: X items` badge with the total item quantity.
-   - Block navigation to checkout and display a helpful message if the cart is empty.
-3. **Student Promo Code Logic (`pages/checkout.html`)**:
-   - Code `STUDENT15` gives **15% off the subtotal** only when the subtotal is **₹150 or more**.
-   - Show a clear error message if the subtotal is under ₹150 or if the promo code is invalid (and reset discount to `0`).
-4. **Order Confirmation Validation (`pages/checkout.html`)**:
-   - Require both **Full Name** and **Roll Number** before confirming an order (and disallow confirming an empty cart).
-   - On valid submission, display an order confirmation message with a generated Order ID and clear the saved cart.
+No package installation or build step is required.
 
----
+1. Download or clone this repository.
+2. Open `index.html` in a modern web browser.
+3. Add menu items and select **Proceed to Checkout** to try the checkout flow.
 
-## Reflection Question (To Include in Your Submission)
-Why couldn't pasting a single file into a standard online chat window solve all of these bugs immediately, whereas workspace-aware AI tools (like **GitHub Copilot** or **Antigravity**) can locate and fix them accurately?
+The app uses browser `localStorage` to keep the cart. If testing in a browser that restricts storage on local files, serve the project with a local static web server instead.
 
-### Reflection
+## Project structure
 
-A single pasted file does not show how the rest of the project is organized, where its assets live, or how pages share data. A workspace-aware tool can inspect related HTML, CSS, JavaScript, and assets together, trace broken paths and mismatched storage keys across files, and verify that the fix works as a complete application.
+```text
+CampusCafe/
+├── assets/
+│   ├── bg-pattern.svg
+│   └── icons/
+├── pages/
+│   └── checkout.html
+├── scripts/
+│   ├── app.js
+│   ├── checkout.js
+│   └── menuData.js
+├── screenshots/
+│   ├── after.png
+│   └── before.png
+├── styles/
+│   ├── main.css
+│   └── theme.css
+├── CampusCafe_Debugging_Report.docx
+└── index.html
+```
+
+## Screenshots
+
+The “before” image reproduces the original broken resource paths and script-loading order; it is not a historical screenshot.
+
+| Before debugging | After debugging |
+| --- | --- |
+| ![Before debugging: menu assets and scripts fail to load](screenshots/before.png) | ![After debugging: menu and cart are working](screenshots/after.png) |
+
+## Report
+
+The submission report includes the issues found, corrections made, validation performed, project limitations, and before-and-after screenshots: [CampusCafe_Debugging_Report.docx](CampusCafe_Debugging_Report.docx).
+
+## Testing
+
+The menu and checkout flows were tested in a browser, including:
+
+- Category filters, live search, and product image loading.
+- Adding items, changing quantities, removing cart rows, and calculating the subtotal.
+- Cart persistence between pages and blocking checkout for an empty cart.
+- Valid and invalid promo codes, including the ₹150 minimum.
+- GST and grand-total calculations, student form validation, order confirmation, and cart clearing.
+- Desktop, tablet, and mobile layouts.
+
+JavaScript syntax can be checked with:
+
+```powershell
+node --check scripts\app.js
+node --check scripts\checkout.js
+node --check scripts\menuData.js
+```
+
+## Limitations
+
+This is a front-end demonstration, not a production ordering system. Orders are not sent to a server, and the generated Order ID is not stored in a database. There is no payment processing or real inventory management.
