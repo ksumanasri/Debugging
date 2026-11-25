@@ -13,6 +13,7 @@ const studentNameInput = document.getElementById("student-name");
 const rollNumberInput = document.getElementById("roll-number");
 const orderMsgEl = document.getElementById("order-msg");
 const cartStorageKey = "campus_cart";
+let cartStorageAvailable = true;
 
 function loadCart() {
   try {
@@ -32,7 +33,9 @@ function loadCart() {
       qty: Number(item.qty)
     }));
   } catch (error) {
+    cartStorageAvailable = false;
     console.error("Could not read the saved cart.", error);
+    orderMsgEl.textContent = "Your saved cart could not be read. Return to the menu and try again.";
     return [];
   }
 }
@@ -97,6 +100,11 @@ orderForm.addEventListener("submit", (event) => {
   orderMsgEl.classList.remove("msg-success");
   orderMsgEl.classList.add("msg-error");
 
+  if (!cartStorageAvailable) {
+    orderMsgEl.textContent = "Your saved cart is unavailable. Return to the menu and try again.";
+    return;
+  }
+
   if (cart.length === 0) {
     orderMsgEl.textContent = "Your cart is empty. Return to the menu and add items before confirming.";
     return;
@@ -108,7 +116,14 @@ orderForm.addEventListener("submit", (event) => {
   }
 
   const orderId = `CC-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
-  localStorage.removeItem(cartStorageKey);
+  try {
+    localStorage.removeItem(cartStorageKey);
+  } catch (error) {
+    console.error("Could not clear the saved cart.", error);
+    orderMsgEl.textContent = "Your order could not be completed because the saved cart could not be cleared.";
+    return;
+  }
+
   cart = [];
   discountAmount = 0;
   renderCheckout();

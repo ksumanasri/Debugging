@@ -2,12 +2,12 @@
 
 **Project:** CampusCafe student ordering website  
 **Technology:** HTML, CSS, vanilla JavaScript  
-**Pages:** Menu and checkout  
-**Submission:** Before-and-after code examples and browser screenshots
+**Pages:** Home/menu, checkout, About, and Visit  
+**Submission:** Before-and-after code examples and browser validation
 
 ## 1. Project overview
 
-CampusCafe is a small, responsive website for browsing campus café drinks and snacks, building an order, and reviewing it at checkout. The original starter project contained incorrect resource paths, incomplete cart and checkout logic, and unfinished filtering and search.
+CampusCafe is a responsive, four-page campus café website. Its original CampusCafe landing page uses a highlight carousel, category shortcuts, recommended products, and a café story before the full menu. Students can browse 12 drinks, snacks, meals, and treats; search and filter the menu; manage a saved cart; and review a sample checkout. About and Visit pages provide café information, sample opening hours, and pickup notes. The visual design uses original CampusCafe wording and local product illustrations. The original starter project contained incorrect resource paths, incomplete cart and checkout logic, and unfinished filtering and search.
 
 ## 2. Problems found
 
@@ -23,14 +23,16 @@ CampusCafe is a small, responsive website for browsing campus café drinks and s
 
 | File | Changes |
 | --- | --- |
-| `index.html` | Corrected CSS and script URLs and script order; added accessible filter/search markup and cart feedback. |
-| `pages/checkout.html` | Corrected relative CSS, script, and back-navigation paths; added required student fields and accessible status messages. |
-| `scripts/menuData.js` | Changed prices to numbers and fixed product SVG paths. |
-| `scripts/app.js` | Implemented menu rendering, category/search filtering, cart quantity controls, numeric totals, persistence, and empty-cart protection. |
-| `scripts/checkout.js` | Implemented shared cart loading, GST/discount/grand-total calculations, promo validation, form checks, Order ID, and cart clearing. |
-| `styles/main.css` | Improved card/cart styles, responsive layouts, focus states, and reduced-motion behavior. |
-| `styles/theme.css`, `assets/bg-pattern.svg` | Added the café color palette, local background asset, and subtle original coffee-bean pattern. |
-| `README.md` | Added project overview, run instructions, features, screenshots, testing, and limitations. |
+| `index.html` | Added the CampusCafe landing-page layout, highlight carousel, category shortcuts, featured menu, café story, navigation, full menu, cart, and pickup information. |
+| `pages/checkout.html` | Corrected relative paths; added navigation, required student fields, promo labeling, and accessible status messages. |
+| `pages/about.html`, `pages/visit.html` | Added café information, sample location and hours, pickup notes, and shared navigation. |
+| `scripts/menuData.js` | Expanded the menu to 12 items in four categories and added matching product icons. |
+| `scripts/app.js` | Implemented menu and recommendation rendering, highlight controls, category shortcuts, description search, cart quantity controls, numeric totals, persistence failure feedback, and empty-cart protection. |
+| `scripts/checkout.js` | Implemented shared cart loading, GST/discount/grand-total calculations, promo validation, form checks, Order ID, and safe cart clearing. |
+| `styles/main.css` | Added the original landing-page design, responsive menu and recommendation layouts, aligned controls, information cards, skip-link styling, focus states, and reduced-motion behavior. |
+| `styles/theme.css`, `assets/icons/*.svg` | Applied the updated CampusCafe color palette and used original local menu illustrations. |
+| `screenshots/after.png`, `screenshots/report-after.png` | Replaced the earlier menu screenshot with a current responsive homepage capture. |
+| `README.md`, `DEBUGGING_REPORT.md`, `CampusCafe_Debugging_Report_Completed.docx` | Updated project documentation, current code examples, testing notes, and report images. |
 
 ## 4. Before-and-after code examples
 
@@ -181,39 +183,110 @@ localStorage.removeItem(cartStorageKey);
 
 The handler then clears the in-memory cart, refreshes the checkout summary, and displays a success message with the generated Order ID.
 
+### G. Switch homepage highlights accessibly
+
+**Current — `scripts/app.js`:**
+
+```js
+function showHeroSlide(index) {
+  activeHeroSlide = (index + heroSlides.length) % heroSlides.length;
+  heroSlides.forEach((slide, slideIndex) => {
+    const isActive = slideIndex === activeHeroSlide;
+    slide.hidden = !isActive;
+    slide.setAttribute("aria-hidden", String(!isActive));
+  });
+  heroDots.forEach((dot, dotIndex) => {
+    const isActive = dotIndex === activeHeroSlide;
+    dot.classList.toggle("is-active", isActive);
+    dot.setAttribute("aria-pressed", String(isActive));
+  });
+}
+```
+
+Previous/next and dot controls use this function to wrap between slides while updating visibility and accessible state.
+
+### H. Connect category shortcuts to the menu filters
+
+**Current — `scripts/app.js`:**
+
+```js
+document.querySelectorAll("[data-category-shortcut]").forEach((shortcut) => {
+  shortcut.addEventListener("click", () => {
+    const category = shortcut.dataset.categoryShortcut;
+    const matchingButton = Array.from(filterButtons).find(
+      (button) => button.dataset.category === category
+    );
+    if (!matchingButton) {
+      console.error(`No menu filter button exists for shortcut category "${category}".`);
+      return;
+    }
+
+    searchInput.value = "";
+    matchingButton.click();
+  });
+});
+```
+
+Each homepage category shortcut clears the search and activates the matching menu filter; a missing filter is reported rather than silently ignored.
+
+### I. Add recommended items without leaving the homepage
+
+**Current — `scripts/app.js`:**
+
+```js
+const recommendedIds = [1, 7, 3];
+const items = MENU_ITEMS.filter((item) => recommendedIds.includes(item.id));
+```
+
+Each rendered recommendation then connects its quick-add button to the shared cart handler:
+
+```js
+addButton.addEventListener("click", () => addToCart(item.id));
+```
+
+The recommendation cards reuse the same cart handler as the full menu, so quantities, totals, and saved cart state stay consistent.
+
 ## 5. Before-and-after screenshots
 
-The “before” image is a **reproduction** of the starter page with its original broken paths and script order; it is not a historical screenshot from before editing. The “after” image shows the repaired menu and product icons.
+The “before” image is a **reproduction** of the starter page with its original broken paths and script order; it is not a historical screenshot from before editing. The updated “after” image is a responsive viewport capture of the current homepage, showing its navigation, welcome bar, and the start of the redesigned hero. It is not a full-page capture; category shortcuts, recommendations, the café story, and the full menu continue below the visible area.
 
 ### Before: broken resources and empty menu
 
 ![Before debugging: original resource paths and script order reproduced](screenshots/report-before.png)
 
-### After: styled menu with working product cards
+### After: current responsive homepage after redesign
 
-![After debugging: repaired menu and product icons](screenshots/report-after.png)
+![Current CampusCafe homepage after redesign](screenshots/report-after.png)
 
 ## 6. Other completed behavior
 
 - Category buttons and live search work together.
+- The landing-page previous/next and dot controls, category shortcuts, header search shortcut, and recommended-item add buttons work with the full menu and cart.
+- The menu contains 12 items across drinks, snacks, meals, and treats; desktop displays up to four cards per row.
+- About and Visit pages share navigation and describe the café concept, sample hours, and pickup flow.
 - Plus/minus controls update quantities; reducing an item to zero removes it.
 - The cart badge shows total units, subtotal uses item prices and quantities, and an empty cart cannot proceed to checkout.
+- The cart count uses the correct singular/plural label, and browser-storage failures are announced instead of silently breaking checkout.
 - Checkout shows saved cart contents, subtotal, 5% GST, discount, and grand total.
 - Full name and roll number are required. Empty carts cannot be confirmed.
 - A valid submission displays an Order ID and clears the saved cart.
-- The design adapts to desktop, tablet, and mobile screens and includes keyboard focus and screen-reader status support.
+- The design adapts to desktop, tablet, and mobile screens and includes skip navigation, keyboard focus, and screen-reader status support.
 
 ## 7. Testing performed
 
 - Checked JavaScript syntax with `node --check` for `app.js`, `checkout.js`, and `menuData.js`.
 - Browser-tested all menu buttons, search, product icons, cart quantity changes, totals, and checkout navigation.
+- Verified that all landing-page images load, the carousel switches slides, category shortcuts return the expected menu results, and recommendation quick-add updates the cart.
+- Checked navigation among Menu, About, Visit, and Checkout and verified the responsive menu grid.
 - Tested cart persistence, invalid promo codes, the ₹150 threshold, and the valid discount calculation.
 - Tested required student details, empty-cart rejection, successful order confirmation, and cart clearing.
-- Checked desktop, tablet, and mobile layouts for horizontal overflow.
+- Checked all four pages at 320px and 390px, and desktop/tablet layouts through 1440px for horizontal overflow.
 
 ## 8. Scope and limitations
 
 This is a front-end demonstration. Cart contents use browser `localStorage`; orders are not sent to a server, and Order IDs are not saved to a database. There is no payment processing or live inventory system.
+
+The Word report in the project folder is synchronized with this report, includes current homepage code examples, and uses the refreshed “after” screenshot. The “before” screenshot remains labeled as a reproduction of the original broken page.
 
 ## 9. Reflection
 

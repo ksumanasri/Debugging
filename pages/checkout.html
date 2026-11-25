@@ -3,27 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Review your CampusCafe order, apply a student promo, and confirm a sample checkout." />
   <title>Checkout — CampusCafe</title>
   <link rel="stylesheet" href="../styles/main.css" />
   <link rel="stylesheet" href="../styles/theme.css" />
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   <header class="topbar">
     <div class="brand">
-      <h1>CampusCafe Checkout</h1>
-      <p>Review your order &amp; apply student promo</p>
+      <span class="brand-mark" aria-hidden="true"><img src="../assets/icons/coffee.svg" alt="" /></span>
+      <span class="brand-copy">
+        <span class="brand-name">CampusCafe</span>
+        <span class="brand-tagline">Review your order &amp; student discount</span>
+      </span>
     </div>
-    <a href="../index.html" class="btn btn-secondary">← Back to Menu</a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="../index.html#top">Home</a>
+      <a href="../index.html#menu-section">Menu</a>
+      <a href="about.html">About</a>
+      <a href="visit.html">Visit</a>
+    </nav>
   </header>
 
-  <main class="checkout-wrapper">
-    <section class="checkout-box">
-      <h2>Order Summary</h2>
+  <main id="main-content" class="checkout-wrapper">
+    <section class="checkout-box" aria-labelledby="summary-heading">
+      <h1 id="summary-heading">Order Summary</h1>
       <ul id="checkout-items" class="cart-list"></ul>
 
       <div class="promo-row">
-        <input type="text" id="promo-input" placeholder="Promo code (e.g. STUDENT15)" />
-        <button id="apply-promo-btn" class="btn btn-secondary">Apply</button>
+        <input
+          type="text"
+          id="promo-input"
+          placeholder="Promo code (e.g. STUDENT15)"
+          aria-label="Promo code"
+          aria-describedby="promo-msg"
+          autocomplete="off"
+        />
+        <button type="button" id="apply-promo-btn" class="btn btn-secondary">Apply</button>
       </div>
       <p id="promo-msg" class="msg-error" role="status" aria-live="polite"></p>
 
@@ -45,16 +62,16 @@
       </div>
     </section>
 
-    <section class="checkout-box">
-      <h2>Student Details</h2>
+    <section class="checkout-box" aria-labelledby="student-details-heading">
+      <h2 id="student-details-heading">Student Details</h2>
       <form id="order-form">
         <div class="form-group">
           <label for="student-name">Full Name</label>
-          <input type="text" id="student-name" placeholder="Enter your name" required />
+          <input type="text" id="student-name" placeholder="Enter your name" autocomplete="name" required />
         </div>
         <div class="form-group">
           <label for="roll-number">Roll Number</label>
-          <input type="text" id="roll-number" placeholder="e.g. CS2026-042" required />
+          <input type="text" id="roll-number" placeholder="e.g. CS2026-042" autocomplete="off" required />
         </div>
         <p id="order-msg" class="msg-error" role="status" aria-live="polite"></p>
         <button type="submit" id="confirm-order-btn" class="btn btn-primary confirm-order-btn">
@@ -63,6 +80,10 @@
       </form>
     </section>
   </main>
+
+  <footer class="site-footer">
+    CampusCafe is a student café website demonstration.
+  </footer>
 
   <script src="../scripts/checkout.js"></script>
 </body>
