@@ -1,0 +1,23 @@
+:root {
+  --primary: #a95212;
+  --primary-dark: #71340f;
+  --accent-soft: #fff0d9;
+  --surface: #fffefa;
+  --border: #eadfce;
+  --muted: #74675c;
+  --text: #302820;
+  --page: #fbf6ed;
+}
+
+body {
+  color: var(--text);
+  background-color: var(--page);
+  background-image:
+    radial-gradient(ellipse at 10% 5%, rgba(235, 183, 121, 0.2), transparent 34rem),
+    radial-gradient(ellipse at 95% 28%, rgba(130, 157, 121, 0.16), transparent 30rem),
+    radial-gradient(ellipse at 50% 100%, rgba(206, 154, 105, 0.1), transparent 38rem),
+    url("../assets/bg-pattern.svg");
+  background-repeat: no-repeat, no-repeat, no-repeat, repeat;
+  background-size: auto, auto, auto, 240px 240px;
+  background-position: top left, top right, bottom center, 0 0;
+}
