@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampusCafe — Student Order Portal</title>
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/theme.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <h1>CampusCafe</h1>
+      <p>Fresh snacks &amp; coffee between lectures</p>
+    </div>
+    <div class="cart-pill" aria-live="polite" aria-atomic="true">
+      Cart: <span id="cart-count">0</span> items
+    </div>
+  </header>
+
+  <main class="container">
+    <section>
+      <h2 class="menu-title">Today's campus favorites</h2>
+      <p class="menu-intro">Freshly picked for a delicious break between classes.</p>
+      <div class="controls">
+        <div class="filter-group" role="group" aria-label="Filter menu by category">
+          <button type="button" class="filter-btn active" data-category="all" aria-pressed="true">All</button>
+          <button type="button" class="filter-btn" data-category="drinks" aria-pressed="false">Drinks</button>
+          <button type="button" class="filter-btn" data-category="snacks" aria-pressed="false">Snacks</button>
+        </div>
+        <input
+          type="search"
+          id="search-input"
+          class="search-input"
+          placeholder="Search menu..."
+          aria-label="Search menu items"
+        />
+      </div>
+
+      <div id="menu-grid" class="menu-grid"></div>
+    </section>
+
+    <aside class="cart-panel">
+      <h2>Your Order</h2>
+      <ul id="cart-list" class="cart-list"></ul>
+
+      <div class="summary-row summary-total">
+        <span>Subtotal</span>
+        <span>₹<span id="cart-subtotal">0</span></span>
+      </div>
+
+      <p id="cart-msg" class="msg-error" role="alert"></p>
+
+      <button type="button" id="checkout-btn" class="btn btn-primary checkout-btn">
+        Proceed to Checkout
+      </button>
+    </aside>
+  </main>
+
+  <script src="scripts/menuData.js"></script>
+  <script src="scripts/app.js"></script>
+</body>
+</html>
